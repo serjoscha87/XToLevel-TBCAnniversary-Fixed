@@ -165,8 +165,14 @@ end
 
 function XToLevel.Config:Open(frameName)
     if self.frames[frameName] then
-        InterfaceOptionsFrame_OpenToCategory(self.frames[frameName])
-        InterfaceOptionsFrame_OpenToCategory(self.frames[frameName])
+        if InterfaceOptionsFrame_OpenToCategory then
+            InterfaceOptionsFrame_OpenToCategory(self.frames[frameName])
+            InterfaceOptionsFrame_OpenToCategory(self.frames[frameName])
+        else
+            -- TBC Anniversary: InterfaceOptionsFrame_OpenToCategory does not exist.
+            -- Fall back to opening the AceConfigDialog floating window directly.
+            LibStub("AceConfigDialog-3.0"):Open("XToLevel", nil, frameName)
+        end
     end
 end
 
@@ -180,7 +186,7 @@ handler = XToLevel.Config,
 args = {
     Information = {
         type = "group",
-        name = "General",
+        name = "XToLevel",
         args = {
             addonDescription = {
                 order = 0,
